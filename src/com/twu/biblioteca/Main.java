@@ -1,7 +1,7 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.entity.Library;
-import com.twu.biblioteca.entity.Menu;
+import com.twu.biblioteca.ui.Menu;
 import com.twu.biblioteca.ui.UserInterface;
 
 public class Main {

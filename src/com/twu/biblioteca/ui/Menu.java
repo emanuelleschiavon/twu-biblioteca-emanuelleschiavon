@@ -1,5 +1,7 @@
-package com.twu.biblioteca.entity;
+package com.twu.biblioteca.ui;
 
+import com.twu.biblioteca.entity.Book;
+import com.twu.biblioteca.entity.Library;
 import com.twu.biblioteca.ui.UserInterface;
 
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class Menu {
         String bookId = userInterface.readLineConsole();
         Integer bookIdInteger = Integer.parseInt(bookId);
         Book book = library.getBookBy(bookIdInteger);
-        Boolean giveBackBookWithSuccess = library.checkOut(book);
+        Boolean giveBackBookWithSuccess = library.giveBack(book);
         if (giveBackBookWithSuccess){
             userInterface.printMessageGiveBackSuccess();
         }else{

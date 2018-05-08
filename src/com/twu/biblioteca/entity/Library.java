@@ -1,7 +1,5 @@
 package com.twu.biblioteca.entity;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,11 +34,6 @@ public class Library {
 
     public List<Book> listAvailableBooks() {
         return this.availableBooks;
-    }
-
-    public void addBookInLibrary(Book book) {
-        this.listBooks().add(book);
-        this.listAvailableBooks().add(book);
     }
 
     public Boolean checkOut(Book book) {

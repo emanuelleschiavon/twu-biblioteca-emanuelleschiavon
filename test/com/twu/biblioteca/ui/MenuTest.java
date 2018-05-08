@@ -1,5 +1,6 @@
-package com.twu.biblioteca.entity;
+package com.twu.biblioteca.ui;
 
+import com.twu.biblioteca.ui.Menu;
 import org.junit.Before;
 import org.junit.Test;
 

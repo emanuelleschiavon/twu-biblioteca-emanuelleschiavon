@@ -51,6 +51,12 @@ public class LibraryTest {
         assertEquals(library.listBooks().get(0), bookWithId1);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnABookNull(){
+        Book book = library.getBookBy(1999);
+        book.getId();
+    }
+
     @Test
     public void shouldCheckOutBook(){
         Book book = new Book(4, "Kathy Sierra", 2005, "Head First Java");

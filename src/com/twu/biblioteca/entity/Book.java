@@ -16,7 +16,7 @@ public class Book {
     }
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public String getAuthor() {
@@ -27,17 +27,17 @@ public class Book {
         return this.available;
     }
 
-    @Override
-    public String toString() {
-        return "Id: " + this.id + ", Author: " + this.author + ", Year Published: " + this.yearPublished + ", Title: " + this.title;
-    }
-
-    public void checkOut(){
+    public void checkOut() {
         this.available = false;
     }
 
-    public void giveBack(){
+    public void giveBack() {
         this.available = true;
+    }
+
+    @Override
+    public String toString() {
+        return "Id: " + this.id + ", Author: " + this.author + ", Year Published: " + this.yearPublished + ", Title: " + this.title;
     }
 
 }
