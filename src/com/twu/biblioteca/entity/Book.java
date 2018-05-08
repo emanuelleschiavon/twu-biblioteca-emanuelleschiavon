@@ -1,22 +1,43 @@
 package com.twu.biblioteca.entity;
 
 public class Book {
+    private Integer id;
     private String author;
     private Integer yearPublished;
     private String title;
+    private Boolean available;
 
-    public Book(String author, Integer yearPublished, String title) {
+    public Book(Integer id, String author, Integer yearPublished, String title) {
+        this.id = id;
         this.author = author;
         this.yearPublished = yearPublished;
         this.title = title;
+        this.available = true;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getAuthor() {
-        return author;
+        return this.author;
+    }
+
+    public Boolean getAvailable() {
+        return this.available;
     }
 
     @Override
     public String toString() {
-        return "Author: " + this.author + ", Year Published: " + this.yearPublished + ", Title: "+ this.title;
+        return "Id: " + this.id + ", Author: " + this.author + ", Year Published: " + this.yearPublished + ", Title: " + this.title;
     }
+
+    public void checkOut(){
+        this.available = false;
+    }
+
+    public void giveBack(){
+        this.available = true;
+    }
+
 }

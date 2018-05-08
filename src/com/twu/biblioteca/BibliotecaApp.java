@@ -1,4 +1,4 @@
-package com.twu.biblioteca.main;
+package com.twu.biblioteca;
 
 public class BibliotecaApp {
 
