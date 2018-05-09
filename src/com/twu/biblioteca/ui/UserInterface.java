@@ -17,20 +17,20 @@ public class UserInterface {
         System.out.println("--------------------------------");
     }
 
-    public void printBooks(Library library) {
-        List<Book> books = library.listAvailableBooks();
-
-        for (Book book : books) {
-            System.out.println(book);
-        }
-    }
+//    public void printBooks(Library library) {
+//        List<Book> books = library.listAvailableBooks();
+//
+//        for (Book book : books) {
+//            System.out.println(book);
+//        }
+//    }
 
     public void printMenu() {
         System.out.println("--------------------------------------------------------");
         System.out.println("| This is the Menu. Type a number option or 0 to quit: |");
         System.out.println("--------------------------------------------------------");
 
-        Menu menu = new Menu();
+        Menu menu = new Menu(this);
         List<String> options = menu.getOptions();
 
         for (String option : options) {

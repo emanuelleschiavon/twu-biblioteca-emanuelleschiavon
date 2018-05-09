@@ -1,5 +1,6 @@
 package com.twu.biblioteca.entity;
 
+import com.twu.biblioteca.exception.BookNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,65 +13,39 @@ public class LibraryTest {
     private Library library;
 
     @Before
-    public void start() {
+    public void setUp() {
         library = new Library();
     }
 
     @Test
-    public void listBooksSizeShouldBeThree() {
+    public void shouldListBooksSizeBeThree() {
         List<Book> books = library.listBooks();
 
         assertEquals(books.size(), 3);
     }
 
     @Test
-    public void firstBookAuthorShouldBeThis() {
-        Book book = library.listBooks().get(0);
+    public void shouldCheckOutAvailableBook() throws BookNotFoundException {
+        Boolean checkOutWithSuccess = library.checkOutBook(1);
 
-        assertEquals(book.getAuthor(), "Robert Martin");
+        assertEquals(checkOutWithSuccess, true);
+    }
+
+    @Test(expected = BookNotFoundException.class)
+    public void shouldThrowBookNotFoundExceptionWhenCheckOutingUnExistentBook() throws BookNotFoundException {
+        library.checkOutBook(999);
     }
 
     @Test
-    public void listAvailableBooksSizeShouldBeThree() {
-        List<Book> availableBooks = library.listAvailableBooks();
+    public void shouldGiveBackBook() throws BookNotFoundException {
+        library.checkOutBook(1);
+        Boolean giveBackWithSuccess = library.giveBackBook(1);
 
-        assertEquals(availableBooks.size(), 3);
+        assertEquals(giveBackWithSuccess, true);
     }
 
-    @Test
-    public void firstBookAvailableAuthorShouldBeThis() {
-        Book book = library.listAvailableBooks().get(0);
-
-        assertEquals(book.getAuthor(), "Robert Martin");
-    }
-
-    @Test
-    public void shouldGetBookFromId1(){
-        Book bookWithId1 = library.getBookBy(1);
-
-        assertEquals(library.listBooks().get(0), bookWithId1);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldReturnABookNull(){
-        Book book = library.getBookBy(1999);
-        book.getId();
-    }
-
-    @Test
-    public void shouldCheckOutBook(){
-        Book book = new Book(4, "Kathy Sierra", 2005, "Head First Java");
-        book.checkOut();
-        library.checkOut(book);
-
-        assertEquals(library.listAvailableBooks().contains(book), false);
-    }
-
-    @Test
-    public void shouldGiveBack(){
-        Book book = new Book(4, "Kathy Sierra", 2005, "Head First Java");
-        library.checkOut(book);
-
-        assertEquals(library.listAvailableBooks().contains(book), false);
+    @Test(expected = BookNotFoundException.class)
+    public void shouldThrowBookNotFoundExceptionWhenGiveBackingUnExistentBook() throws BookNotFoundException {
+        library.giveBackBook(999);
     }
 }

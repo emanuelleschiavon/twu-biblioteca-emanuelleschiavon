@@ -14,7 +14,7 @@ public class MenuTest {
 
     @Before
     public void start() {
-        menu = new Menu();
+        menu = new Menu(new UserInterface());
     }
 
     @Test

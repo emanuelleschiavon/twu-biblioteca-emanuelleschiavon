@@ -1,8 +1,7 @@
 package com.twu.biblioteca.ui;
 
-import com.twu.biblioteca.entity.Book;
 import com.twu.biblioteca.entity.Library;
-import com.twu.biblioteca.ui.UserInterface;
+import com.twu.biblioteca.exception.BookNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,8 +10,10 @@ import java.util.List;
 public class Menu {
 
     private List<String> options;
+    private UserInterface userInterface;
 
-    public Menu() {
+    public Menu(UserInterface userInterface) {
+        this.userInterface = userInterface;
         this.options = new ArrayList<String>();
         addOptionsToMenu();
     }
@@ -25,16 +26,17 @@ public class Menu {
         return options;
     }
 
-    public void evaluateOption(Integer optionMenuNumber, UserInterface userInterface, Library library) {
-        switch (optionMenuNumber) {
+    public void evaluateOption(Integer optionMenu) {
+        Library library = new Library();
+        switch (optionMenu) {
             case 1:
-                userInterface.printBooks(library);
+//                userInterface.printBooks(library);
                 break;
             case 2:
-                checkOutBook(userInterface, library);
+                checkOutBook(library);
                 break;
             case 3:
-                giveBackBook(userInterface, library);
+//                giveBackBook(library);
                 break;
             case 0:
                 System.exit(0);
@@ -45,30 +47,34 @@ public class Menu {
         }
     }
 
-    private void checkOutBook(UserInterface userInterface, Library library) {
+    private void checkOutBook(Library library){
         userInterface.printCheckOut();
         String bookId = userInterface.readLineConsole();
-        Integer bookIdInteger = Integer.parseInt(bookId);
-        Book book = library.getBookBy(bookIdInteger);
-        Boolean checkOutBookWithSuccess = library.checkOut(book);
-        if (checkOutBookWithSuccess){
-            userInterface.printMessageCheckOutSuccess();
-        }else{
-            userInterface.printMessageCheckOutNotSuccess();
+        try{
+            Boolean checkOutBookWithSuccess = library.checkOutBook(Integer.parseInt(bookId));
+            if (checkOutBookWithSuccess) {
+                userInterface.printMessageCheckOutSuccess();
+            } else {
+                userInterface.printMessageCheckOutNotSuccess();
+            }
+        }catch(BookNotFoundException e){
+            System.out.println(e.getMessage());
         }
     }
 
-    private void giveBackBook(UserInterface userInterface, Library library) {
-        userInterface.printGiveBack();
-        String bookId = userInterface.readLineConsole();
-        Integer bookIdInteger = Integer.parseInt(bookId);
-        Book book = library.getBookBy(bookIdInteger);
-        Boolean giveBackBookWithSuccess = library.giveBack(book);
-        if (giveBackBookWithSuccess){
-            userInterface.printMessageGiveBackSuccess();
-        }else{
-            userInterface.printMessageGiveBackNotSuccess();
-        }
-    }
+//    private void giveBackBook(Library library){
+//        userInterface.printGiveBack();
+//        String bookId = userInterface.readLineConsole();
+//        try {
+//            Boolean giveBackBookWithSuccess = library.giveBackBook(Integer.parseInt(bookId));
+//            if (giveBackBookWithSuccess) {
+//                userInterface.printMessageGiveBackSuccess();
+//            } else {
+//                userInterface.printMessageGiveBackNotSuccess();
+//            }
+//        }catch(BookNotFoundException e){
+//            System.out.println(e.getMessage());
+//        }
+//    }
 
 }

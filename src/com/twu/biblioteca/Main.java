@@ -1,6 +1,5 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.entity.Library;
 import com.twu.biblioteca.ui.Menu;
 import com.twu.biblioteca.ui.UserInterface;
 
@@ -8,7 +7,6 @@ public class Main {
 
     public void start() {
         UserInterface userInterface = new UserInterface();
-        Library library = new Library();
 
         userInterface.printWelcome();
         userInterface.readLineConsole();
@@ -16,7 +14,7 @@ public class Main {
         while (true){
             userInterface.printMenu();
             String optionMenu = userInterface.readLineConsole();
-            Menu menu = new Menu();
+            Menu menu = new Menu(userInterface);
             Integer optionNumberInteger = -1;
             try{
                 optionNumberInteger = Integer.parseInt(optionMenu);
@@ -24,7 +22,7 @@ public class Main {
                 System.out.println("Type a number!");
             }
             finally {
-                menu.evaluateOption(optionNumberInteger, userInterface, library);
+                menu.evaluateOption(optionNumberInteger);
             }
         }
     }
