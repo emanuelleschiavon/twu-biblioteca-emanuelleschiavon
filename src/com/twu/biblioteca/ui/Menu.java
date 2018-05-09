@@ -30,13 +30,13 @@ public class Menu {
         Library library = new Library();
         switch (optionMenu) {
             case 1:
-//                userInterface.printBooks(library);
+                userInterface.printBooks(library.listBooksAvailable());
                 break;
             case 2:
                 checkOutBook(library);
                 break;
             case 3:
-//                giveBackBook(library);
+                giveBackBook(library);
                 break;
             case 0:
                 System.exit(0);
@@ -47,34 +47,34 @@ public class Menu {
         }
     }
 
-    private void checkOutBook(Library library){
+    private void checkOutBook(Library library) {
         userInterface.printCheckOut();
-        String bookId = userInterface.readLineConsole();
-        try{
-            Boolean checkOutBookWithSuccess = library.checkOutBook(Integer.parseInt(bookId));
+        Integer bookId = userInterface.readNumber();
+        try {
+            Boolean checkOutBookWithSuccess = library.checkOutBook(bookId);
             if (checkOutBookWithSuccess) {
                 userInterface.printMessageCheckOutSuccess();
             } else {
                 userInterface.printMessageCheckOutNotSuccess();
             }
-        }catch(BookNotFoundException e){
+        } catch (BookNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
 
-//    private void giveBackBook(Library library){
-//        userInterface.printGiveBack();
-//        String bookId = userInterface.readLineConsole();
-//        try {
-//            Boolean giveBackBookWithSuccess = library.giveBackBook(Integer.parseInt(bookId));
-//            if (giveBackBookWithSuccess) {
-//                userInterface.printMessageGiveBackSuccess();
-//            } else {
-//                userInterface.printMessageGiveBackNotSuccess();
-//            }
-//        }catch(BookNotFoundException e){
-//            System.out.println(e.getMessage());
-//        }
-//    }
+    private void giveBackBook(Library library) {
+        userInterface.printGiveBack();
+        Integer bookId = userInterface.readNumber();
+        try {
+            Boolean giveBackBookWithSuccess = library.giveBackBook(bookId);
+            if (giveBackBookWithSuccess) {
+                userInterface.printMessageGiveBackSuccess();
+            } else {
+                userInterface.printMessageGiveBackNotSuccess();
+            }
+        } catch (BookNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 }

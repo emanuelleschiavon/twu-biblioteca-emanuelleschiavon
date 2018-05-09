@@ -23,6 +23,16 @@ public class Library {
         return this.books;
     }
 
+    public List<Book> listBooksAvailable() {
+        List<Book> booksAvailable = new ArrayList<Book>();
+        for (Book book : this.books) {
+            if (book.getAvailable()) {
+                booksAvailable.add(book);
+            }
+        }
+        return booksAvailable;
+    }
+
     public Boolean checkOutBook(Integer bookId) throws BookNotFoundException {
         Boolean checkOutWithSuccess = false;
         Book book = getBookBy(bookId);

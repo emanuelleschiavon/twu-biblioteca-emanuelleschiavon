@@ -1,12 +1,9 @@
 package com.twu.biblioteca.ui;
 
 import com.twu.biblioteca.entity.Book;
-import com.twu.biblioteca.entity.Library;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Scanner;
 
 public class UserInterface {
 
@@ -17,21 +14,17 @@ public class UserInterface {
         System.out.println("--------------------------------");
     }
 
-//    public void printBooks(Library library) {
-//        List<Book> books = library.listAvailableBooks();
-//
-//        for (Book book : books) {
-//            System.out.println(book);
-//        }
-//    }
+    public void printBooks(List<Book> books) {
 
-    public void printMenu() {
+        for (Book book : books) {
+            System.out.println(book);
+        }
+    }
+
+    public void printOptions(List<String> options) {
         System.out.println("--------------------------------------------------------");
         System.out.println("| This is the Menu. Type a number option or 0 to quit: |");
         System.out.println("--------------------------------------------------------");
-
-        Menu menu = new Menu(this);
-        List<String> options = menu.getOptions();
 
         for (String option : options) {
             System.out.println(option);
@@ -42,17 +35,11 @@ public class UserInterface {
         System.out.println("Select a valid option!");
     }
 
-    public String readLineConsole() {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String line = "";
+    public Integer readNumber() {
+        Scanner scanner = new Scanner(System.in);
+        Integer number = scanner.nextInt();
 
-        try {
-            line = br.readLine();
-        } catch (IOException e) {
-            System.out.println("Error reading keyboard");
-        }
-
-        return line;
+        return number;
     }
 
     public void printMessageCheckOutSuccess() {

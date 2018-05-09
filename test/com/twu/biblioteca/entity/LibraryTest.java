@@ -25,7 +25,29 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldCheckOutAvailableBook() throws BookNotFoundException {
+    public void shouldListBooksAvailable(){
+        Book book = library.listBooks().get(0);
+        book.checkOut();
+        List<Book> books = library.listBooksAvailable();
+
+        assertEquals(books.size(), 2);
+    }
+
+    @Test
+    public void shouldListBooksAvailableEmpty(){
+        Book book = library.listBooks().get(2);
+        book.checkOut();
+        Book book2 = library.listBooks().get(1);
+        book2.checkOut();
+        Book book3 = library.listBooks().get(0);
+        book3.checkOut();
+        List<Book> books = library.listBooksAvailable();
+
+        assertEquals(books.size(), 0);
+    }
+
+    @Test
+    public void shouldCheckOutBookAvailable() throws BookNotFoundException {
         Boolean checkOutWithSuccess = library.checkOutBook(1);
 
         assertEquals(checkOutWithSuccess, true);

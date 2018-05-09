@@ -19,10 +19,6 @@ public class Book {
         return this.id;
     }
 
-    public String getAuthor() {
-        return this.author;
-    }
-
     public Boolean getAvailable() {
         return this.available;
     }

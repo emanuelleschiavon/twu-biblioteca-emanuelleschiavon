@@ -9,21 +9,13 @@ public class Main {
         UserInterface userInterface = new UserInterface();
 
         userInterface.printWelcome();
-        userInterface.readLineConsole();
+        userInterface.readNumber();
 
-        while (true){
-            userInterface.printMenu();
-            String optionMenu = userInterface.readLineConsole();
+        while (true) {
             Menu menu = new Menu(userInterface);
-            Integer optionNumberInteger = -1;
-            try{
-                optionNumberInteger = Integer.parseInt(optionMenu);
-            }catch(NumberFormatException e){
-                System.out.println("Type a number!");
-            }
-            finally {
-                menu.evaluateOption(optionNumberInteger);
-            }
+            userInterface.printOptions(menu.getOptions());
+            Integer optionMenu = userInterface.readNumber();
+            menu.evaluateOption(optionMenu);
         }
     }
 
