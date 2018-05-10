@@ -19,27 +19,40 @@ public class Menu {
     }
 
     private void addOptionsToMenu() {
-        this.options = Arrays.asList("1. List Books", "2. Check Out Book", "3. Return Book", "0. Quit");
+        this.options = Arrays.asList("1. List Available Books", "2. Check Out Book", "3. Return Book", "0. Quit");
     }
 
     public List<String> getOptions() {
         return options;
     }
 
-    public void evaluateOption(Integer optionMenu) {
-        Library library = new Library();
+    public void evaluateOption(Integer optionMenu, Library library) {
+        Integer bookId;
         switch (optionMenu) {
-            case 1:
-                userInterface.printBooks(library.listBooksAvailable());
-                break;
-            case 2:
-                checkOutBook(library);
-                break;
-            case 3:
-                giveBackBook(library);
-                break;
             case 0:
                 System.exit(0);
+            case 1:
+                userInterface.printAvailableBooks(library.listBooksAvailable());
+                break;
+            case 2:
+                userInterface.printCheckOut();
+                bookId = userInterface.readNumber();
+                Boolean checkOutBook = checkOutBook(bookId, library);
+                if(checkOutBook){
+                    userInterface.printMessageCheckOutSuccess();
+                }else{
+                    userInterface.printMessageCheckOutNotSuccess();
+                }
+                break;
+            case 3:
+                userInterface.printGiveBack();
+                bookId = userInterface.readNumber();
+                Boolean giveBackBook = giveBackBook(bookId, library);
+                if (giveBackBook){
+                    userInterface.printMessageGiveBackSuccess();
+                }else{
+                    userInterface.printMessageGiveBackNotSuccess();
+                }
                 break;
             default:
                 userInterface.printMessageError();
@@ -47,33 +60,23 @@ public class Menu {
         }
     }
 
-    private void checkOutBook(Library library) {
-        userInterface.printCheckOut();
-        Integer bookId = userInterface.readNumber();
+    private Boolean checkOutBook(Integer bookId, Library library) {
         try {
             Boolean checkOutBookWithSuccess = library.checkOutBook(bookId);
-            if (checkOutBookWithSuccess) {
-                userInterface.printMessageCheckOutSuccess();
-            } else {
-                userInterface.printMessageCheckOutNotSuccess();
-            }
+            return checkOutBookWithSuccess;
         } catch (BookNotFoundException e) {
             System.out.println(e.getMessage());
+            return false;
         }
     }
 
-    private void giveBackBook(Library library) {
-        userInterface.printGiveBack();
-        Integer bookId = userInterface.readNumber();
+    private Boolean giveBackBook(Integer bookId, Library library) {
         try {
             Boolean giveBackBookWithSuccess = library.giveBackBook(bookId);
-            if (giveBackBookWithSuccess) {
-                userInterface.printMessageGiveBackSuccess();
-            } else {
-                userInterface.printMessageGiveBackNotSuccess();
-            }
+            return giveBackBookWithSuccess;
         } catch (BookNotFoundException e) {
             System.out.println(e.getMessage());
+            return false;
         }
     }
 

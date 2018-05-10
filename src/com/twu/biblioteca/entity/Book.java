@@ -33,7 +33,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Id: " + this.id + ", Author: " + this.author + ", Year Published: " + this.yearPublished + ", Title: " + this.title;
+        return "Id: " + this.id + ", Author: " + this.author + ", Year Published: " + this.yearPublished + ", Title: " + this.title + ", Is available: " + this.available;
     }
 
 }

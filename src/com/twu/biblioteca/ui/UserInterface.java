@@ -8,13 +8,13 @@ import java.util.Scanner;
 public class UserInterface {
 
     public void printWelcome() {
-        System.out.println("--------------------------------");
-        System.out.println("|  Welcome to the Library!!!   |");
-        System.out.println("|  Press ENTER to continue...  |");
-        System.out.println("--------------------------------");
+        System.out.println("---------------------");
+        System.out.println("|  Welcome to the   |");
+        System.out.println("|    LIBRARY...     |");
+        System.out.println("---------------------");
     }
 
-    public void printBooks(List<Book> books) {
+    public void printAvailableBooks(List<Book> books) {
 
         for (Book book : books) {
             System.out.println(book);
@@ -22,9 +22,9 @@ public class UserInterface {
     }
 
     public void printOptions(List<String> options) {
-        System.out.println("--------------------------------------------------------");
-        System.out.println("| This is the Menu. Type a number option or 0 to quit: |");
-        System.out.println("--------------------------------------------------------");
+        System.out.println("------------------------------------------");
+        System.out.println("| This is the Menu. Type a number option: |");
+        System.out.println("------------------------------------------");
 
         for (String option : options) {
             System.out.println(option);
