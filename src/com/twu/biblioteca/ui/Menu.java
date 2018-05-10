@@ -1,7 +1,7 @@
 package com.twu.biblioteca.ui;
 
 import com.twu.biblioteca.entity.Library;
-import com.twu.biblioteca.exception.BookNotFoundException;
+import com.twu.biblioteca.exception.ItemNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,17 +27,17 @@ public class Menu {
     }
 
     public void evaluateOption(Integer optionMenu, Library library) {
-        Integer bookId;
+        Integer itemId;
         switch (optionMenu) {
             case 0:
                 System.exit(0);
             case 1:
-                userInterface.printAvailableBooks(library.listBooksAvailable());
+                userInterface.printAvailableItems(library.listAvailableItems());
                 break;
             case 2:
                 userInterface.printCheckOut();
-                bookId = userInterface.readNumber();
-                Boolean checkOutBook = checkOutBook(bookId, library);
+                itemId = userInterface.readNumber();
+                Boolean checkOutBook = checkOutItem(itemId, library);
                 if(checkOutBook){
                     userInterface.printMessageCheckOutSuccess();
                 }else{
@@ -46,9 +46,9 @@ public class Menu {
                 break;
             case 3:
                 userInterface.printGiveBack();
-                bookId = userInterface.readNumber();
-                Boolean giveBackBook = giveBackBook(bookId, library);
-                if (giveBackBook){
+                itemId = userInterface.readNumber();
+                Boolean giveBackItem = giveBackItem(itemId, library);
+                if (giveBackItem){
                     userInterface.printMessageGiveBackSuccess();
                 }else{
                     userInterface.printMessageGiveBackNotSuccess();
@@ -60,21 +60,21 @@ public class Menu {
         }
     }
 
-    private Boolean checkOutBook(Integer bookId, Library library) {
+    private Boolean checkOutItem(Integer itemId, Library library) {
         try {
-            Boolean checkOutBookWithSuccess = library.checkOutBook(bookId);
-            return checkOutBookWithSuccess;
-        } catch (BookNotFoundException e) {
+            Boolean checkOutItemWithSuccess = library.checkOutItem(itemId);
+            return checkOutItemWithSuccess;
+        } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    private Boolean giveBackBook(Integer bookId, Library library) {
+    private Boolean giveBackItem(Integer itemId, Library library) {
         try {
-            Boolean giveBackBookWithSuccess = library.giveBackBook(bookId);
-            return giveBackBookWithSuccess;
-        } catch (BookNotFoundException e) {
+            Boolean giveBackItemWithSuccess = library.giveBackItem(itemId);
+            return giveBackItemWithSuccess;
+        } catch (ItemNotFoundException e) {
             System.out.println(e.getMessage());
             return false;
         }

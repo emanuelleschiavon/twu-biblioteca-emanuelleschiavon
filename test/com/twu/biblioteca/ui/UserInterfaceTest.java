@@ -1,6 +1,7 @@
 package com.twu.biblioteca.ui;
 
 import com.twu.biblioteca.entity.Book;
+import com.twu.biblioteca.entity.Item;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,8 +35,9 @@ public class UserInterfaceTest {
 
     @Test
     public void shouldPrintListBooks() {
-        List<Book> books = Arrays.asList(new Book(1, "Robert Martin", 2008, "Clean Code"), new Book(2, "Andrew Hunt", 1999, "The Pragmatic Programmer"), new Book(3, "Robert Martin", 2011, "The Clean Coder"));
-        userInterface.printAvailableBooks(books);
+        List<Item> items = new ArrayList<Item>();
+        items.add(new Book(1, "Robert Martin", 2008, "Clean Code"));
+        userInterface.printAvailableItems(items);
         String printExpected = "Id: 1, Author: Robert Martin, Year Published: 2008, Title: Clean Code";
 
         assertThat(systemOutRule.getLog(), containsString(printExpected));

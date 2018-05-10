@@ -1,6 +1,6 @@
 package com.twu.biblioteca.ui;
 
-import com.twu.biblioteca.entity.Book;
+import com.twu.biblioteca.entity.Item;
 
 import java.util.List;
 import java.util.Scanner;
@@ -14,10 +14,10 @@ public class UserInterface {
         System.out.println("---------------------");
     }
 
-    public void printAvailableBooks(List<Book> books) {
+    public void printAvailableItems(List<Item> items) {
 
-        for (Book book : books) {
-            System.out.println(book);
+        for (Item item : items) {
+            System.out.println(item);
         }
     }
 
@@ -43,7 +43,7 @@ public class UserInterface {
     }
 
     public void printMessageCheckOutSuccess() {
-        System.out.println("Thank you! Enjoy the book");
+        System.out.println("Thank you! Enjoy the item");
     }
 
     public void printMessageCheckOutNotSuccess() {
@@ -55,7 +55,7 @@ public class UserInterface {
     }
 
     public void printMessageGiveBackSuccess() {
-        System.out.println("Thank you for returning the book.");
+        System.out.println("Thank you for returning the item.");
     }
 
     public void printMessageGiveBackNotSuccess() {

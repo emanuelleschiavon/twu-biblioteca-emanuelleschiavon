@@ -1,64 +1,68 @@
 package com.twu.biblioteca.entity;
 
-import com.twu.biblioteca.exception.BookNotFoundException;
+import com.twu.biblioteca.exception.ItemNotFoundException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Library {
 
-    private List<Book> books;
+    private List<Item> items;
 
     public Library() {
-        this.books = new ArrayList<Book>();
+        this.items = new ArrayList<Item>();
         addBooksDefault();
     }
 
     private void addBooksDefault() {
-        this.books = Arrays.asList(new Book(1, "Robert Martin", 2008, "Clean Code"), new Book(2, "Andrew Hunt", 1999, "The Pragmatic Programmer"), new Book(3, "Robert Martin", 2011, "The Clean Coder"));
+        items.add(new Book(1, "Robert Martin", 2008, "Clean Code"));
+        items.add(new Book(2, "Andrew Hunt", 1999, "The Pragmatic Programmer"));
+        items.add(new Book(3, "Robert Martin", 2011, "The Clean Coder"));
+        items.add(new Movie(4, "Quentin Tarantino", 2013, "Django Unchained", 10));
+        items.add(new Movie(5, "Quentin Tarantino", 2016, "The Hateful Eight", 10));
     }
 
-    public List<Book> listBooks() {
-        return this.books;
+
+    public List<Item> listItems() {
+        return this.items;
     }
 
-    public List<Book> listBooksAvailable() {
-        List<Book> booksAvailable = new ArrayList<Book>();
-        for (Book book : this.books) {
-            if (book.getAvailable()) {
-                booksAvailable.add(book);
+    public List<Item> listAvailableItems() {
+        List<Item> availableItems = new ArrayList<Item>();
+        for (Item item : this.items) {
+            if (item.getAvailable()) {
+                availableItems.add(item);
             }
         }
-        return booksAvailable;
+        return availableItems;
     }
 
-    public Boolean checkOutBook(Integer bookId) throws BookNotFoundException {
+    public Boolean checkOutItem(Integer itemId) throws ItemNotFoundException {
         Boolean checkOutWithSuccess = false;
-        Book book = getBookBy(bookId);
-        if (book.getAvailable()) {
-            book.checkOut();
+        Item item = getItemBy(itemId);
+        if (item.getAvailable()) {
+            item.checkOut();
             checkOutWithSuccess = true;
         }
         return checkOutWithSuccess;
     }
 
-    public Boolean giveBackBook(Integer bookId) throws BookNotFoundException {
+    public Boolean giveBackItem(Integer itemId) throws ItemNotFoundException {
         Boolean giveBackSuccess = false;
-        Book book = getBookBy(bookId);
-        if (!book.getAvailable()) {
-            book.giveBack();
+        Item item = getItemBy(itemId);
+        if (!item.getAvailable()) {
+            item.giveBack();
             giveBackSuccess = true;
         }
         return giveBackSuccess;
     }
 
-    private Book getBookBy(Integer id) throws BookNotFoundException {
-        for (Book book : this.books) {
-            if (id.equals(book.getId())) {
-                return book;
+    private Item getItemBy(Integer id) throws ItemNotFoundException {
+        for (Item item : this.items) {
+            if (id.equals(item.getId())) {
+                return item;
             }
         }
-        throw new BookNotFoundException(id);
+        throw new ItemNotFoundException(id);
     }
 }

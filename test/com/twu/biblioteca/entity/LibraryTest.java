@@ -1,6 +1,6 @@
 package com.twu.biblioteca.entity;
 
-import com.twu.biblioteca.exception.BookNotFoundException;
+import com.twu.biblioteca.exception.ItemNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,51 +18,51 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldListBooksSizeBeThree() {
-        List<Book> books = library.listBooks();
+    public void shouldListItemsSizeBeThree() {
+        List<Item> items = library.listItems();
 
-        assertEquals(books.size(), 3);
+        assertEquals(items.size(), 5);
     }
 
     @Test
-    public void shouldListBooksAvailable(){
-        Book book = library.listBooks().get(0);
-        book.checkOut();
-        List<Book> books = library.listBooksAvailable();
+    public void shouldListItemsAvailable(){
+        Item item = library.listItems().get(0);
+        item.checkOut();
+        List<Item> items = library.listAvailableItems();
 
-        assertEquals(books.size(), 2);
+        assertEquals(items.size(), 4);
     }
 
     @Test
-    public void shouldListBooksAvailableAfterCheckOut() throws BookNotFoundException {
-        library.checkOutBook(2);
-        library.checkOutBook(1);
+    public void shouldListItemsAvailableAfterCheckOut() throws ItemNotFoundException {
+        library.checkOutItem(4);
+        library.checkOutItem(1);
 
-        assertEquals(library.listBooksAvailable().size(), 1);
+        assertEquals(library.listAvailableItems().size(), 3);
     }
 
     @Test
-    public void shouldCheckOutBookAvailable() throws BookNotFoundException {
-        Boolean checkOutWithSuccess = library.checkOutBook(1);
+    public void shouldCheckOutItemAvailable() throws ItemNotFoundException {
+        Boolean checkOutWithSuccess = library.checkOutItem(1);
 
         assertEquals(checkOutWithSuccess, true);
     }
 
-    @Test(expected = BookNotFoundException.class)
-    public void shouldThrowBookNotFoundExceptionWhenCheckOutingUnExistentBook() throws BookNotFoundException {
-        library.checkOutBook(0);
+    @Test(expected = ItemNotFoundException.class)
+    public void shouldThrowItemNotFoundExceptionWhenCheckOutingUnExistentItem() throws ItemNotFoundException {
+        library.checkOutItem(0);
     }
 
     @Test
-    public void shouldGiveBackBook() throws BookNotFoundException {
-        library.checkOutBook(1);
-        Boolean giveBackWithSuccess = library.giveBackBook(1);
+    public void shouldGiveBackItem() throws ItemNotFoundException {
+        library.checkOutItem(1);
+        Boolean giveBackWithSuccess = library.giveBackItem(1);
 
         assertEquals(giveBackWithSuccess, true);
     }
 
-    @Test(expected = BookNotFoundException.class)
-    public void shouldThrowBookNotFoundExceptionWhenGiveBackingUnExistentBook() throws BookNotFoundException {
-        library.giveBackBook(999);
+    @Test(expected = ItemNotFoundException.class)
+    public void shouldThrowItemNotFoundExceptionWhenGiveBackingUnExistentItem() throws ItemNotFoundException {
+        library.giveBackItem(0);
     }
 }

@@ -7,10 +7,10 @@ import static org.junit.Assert.assertEquals;
 public class BookTest {
 
     @Test
-    public void shouldPrintInformation(){
-        Book book = new Book(1, "Robert Martin", 2008, "Clean Code" );
+    public void shouldPrintBookInformation() {
+        Book book = new Book(1, "Robert Martin", 2008, "Clean Code");
 
-        assertEquals(book.toString(), "Id: 1, Author: Robert Martin, Year Published: 2008, Title: Clean Code, Is available: true");
+        assertEquals(book.toString(), "Id: 1, Author: Robert Martin, Year Published: 2008, Title: Clean Code");
     }
 
 }

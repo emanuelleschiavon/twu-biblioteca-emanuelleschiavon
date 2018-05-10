@@ -13,13 +13,13 @@
 //            case 0:
 //                System.exit(0);
 //            case 1:
-//                userInterface.printBooks(library.listBooksAvailable());
+//                userInterface.printBooks(library.listAvailableItems());
 //                break;
 //            case 2:
 //                userInterface.printCheckOut();
 //                bookId = userInterface.readNumber();
-//                Boolean checkOutBook = checkOutBook(bookId, library);
-//                if(checkOutBook){
+//                Boolean checkOutItem = checkOutItem(bookId, library);
+//                if(checkOutItem){
 //                    userInterface.printMessageCheckOutSuccess();
 //                }else{
 //                    userInterface.printMessageCheckOutNotSuccess();
@@ -41,11 +41,11 @@
 //        }
 //    }
 //
-//    private Boolean checkOutBook(Integer bookId, Library library) {
+//    private Boolean checkOutItem(Integer bookId, Library library) {
 //        try {
-//            Boolean checkOutBookWithSuccess = library.checkOutBook(bookId);
+//            Boolean checkOutBookWithSuccess = library.checkOutItem(bookId);
 //            return checkOutBookWithSuccess;
-//        } catch (BookNotFoundException e) {
+//        } catch (ItemNotFoundException e) {
 //            System.out.println(e.getMessage());
 //            return false;
 //        }
@@ -55,7 +55,7 @@
 //        try {
 //            Boolean giveBackBookWithSuccess = library.giveBackBook(bookId);
 //            return giveBackBookWithSuccess;
-//        } catch (BookNotFoundException e) {
+//        } catch (ItemNotFoundException e) {
 //            System.out.println(e.getMessage());
 //            return false;
 //        }

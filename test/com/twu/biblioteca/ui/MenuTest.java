@@ -1,6 +1,7 @@
 package com.twu.biblioteca.ui;
 
 import com.twu.biblioteca.entity.Library;
+import com.twu.biblioteca.exception.ItemNotFoundException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,18 +48,20 @@ public class MenuTest {
     }
 
     @Test
-    public void shouldPrintBooks() {
+    public void shouldPrintItems() {
         menu.evaluateOption(1, new Library());
 
         assertThat(systemOutRule.getLog(), containsString("Id: 1, Author: Robert Martin, Year Published:"));
     }
 
     @Test
-    public void shouldCheckOutBookAvailable() {
+    public void shouldCheckOutItemAvailable() throws ItemNotFoundException {
         systemInMock.provideLines("3");
+        Library library = new Library();
+        library.checkOutItem(3);
         menu.evaluateOption(2, new Library());
 
-        assertThat(systemOutRule.getLog(), containsString("Thank you! Enjoy the book"));
+        assertThat(systemOutRule.getLog(), containsString("Thank you! Enjoy the item"));
     }
 
     @Test
@@ -66,23 +69,25 @@ public class MenuTest {
         systemInMock.provideLines("99");
         menu.evaluateOption(2, new Library());
 
-        assertThat(systemOutRule.getLog(), containsString("Doesn't exist book "));
+        assertThat(systemOutRule.getLog(), containsString("Doesn't exist item "));
     }
 
     @Test
-    public void shouldGiveBackBookAvailable() {
+    public void shouldGiveBacItemAvailable() throws ItemNotFoundException {
         systemInMock.provideLines("3");
-        menu.evaluateOption(3, new Library());
+        Library library = new Library();
+        library.checkOutItem(3);
+        menu.evaluateOption(3, library);
 
-        assertThat(systemOutRule.getLog(), containsString("Thank you for returning the book."));
+        assertThat(systemOutRule.getLog(), containsString("Thank you for returning the item."));
     }
 
     @Test
-    public void shouldGiveBackBookNotAvailable() {
+    public void shouldGiveBackItemNotAvailable() {
         systemInMock.provideLines("99");
         menu.evaluateOption(3, new Library());
 
-        assertThat(systemOutRule.getLog(), containsString("Doesn't exist book "));
+        assertThat(systemOutRule.getLog(), containsString("Doesn't exist item "));
     }
 
     @Test
