@@ -6,6 +6,7 @@ public abstract class Item {
     protected String owner;
     protected String name;
     protected Boolean available;
+    protected User userCheckOut;
 
     public Item(Integer id, Integer year, String owner, String name) {
         this.id = id;
@@ -23,11 +24,13 @@ public abstract class Item {
         return this.available;
     }
 
-    public void checkOut() {
+    public void checkOut(User user) {
+        this.userCheckOut = user;
         this.available = false;
     }
 
     public void giveBack() {
+        this.userCheckOut = null;
         this.available = true;
     }
 

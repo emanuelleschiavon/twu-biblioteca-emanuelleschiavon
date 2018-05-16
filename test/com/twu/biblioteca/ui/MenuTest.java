@@ -1,6 +1,7 @@
 package com.twu.biblioteca.ui;
 
 import com.twu.biblioteca.entity.Library;
+import com.twu.biblioteca.entity.User;
 import com.twu.biblioteca.exception.ItemNotFoundException;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,6 +20,8 @@ import static org.junit.contrib.java.lang.system.TextFromStandardInputStream.emp
 public class MenuTest {
 
     private Menu menu;
+    private Library library;
+    private User user;
 
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
@@ -30,12 +33,23 @@ public class MenuTest {
     public final ExpectedSystemExit exit = ExpectedSystemExit.none();
 
     @Before
-    public void start() {
-        menu = new Menu(new UserInterface());
+    public void setUp() {
+        library = new Library();
+        user = new User("João", "joao@email.com", "1234", "99999");
     }
 
     @Test
-    public void shouldHaveTwoOptionInMenu() {
+    public void shouldHaveOptionInMenuWhenLogged() {
+        library.login(new User("Joao", "joao@email.com", "1234", "9999"));
+        menu = new Menu(new Printer(), library);
+        List<String> options = menu.getOptions();
+
+        assertEquals(options.size(), 5);
+    }
+
+    @Test
+    public void shouldOptionMenuHaveNotShowInformationWhenNotLogged() {
+        menu = new Menu(new Printer(), library);
         List<String> options = menu.getOptions();
 
         assertEquals(options.size(), 4);
@@ -44,56 +58,90 @@ public class MenuTest {
     @Test
     public void shouldExit() {
         exit.expectSystemExitWithStatus(0);
-        menu.evaluateOption(0, new Library());
+        menu = new Menu(new Printer(), library);
+        menu.evaluateOption(0);
     }
 
     @Test
     public void shouldPrintItems() {
-        menu.evaluateOption(1, new Library());
+        menu = new Menu(new Printer(), library);
+        menu.evaluateOption(1);
 
         assertThat(systemOutRule.getLog(), containsString("Id: 1, Author: Robert Martin, Year Published:"));
     }
 
     @Test
-    public void shouldCheckOutItemAvailable() throws ItemNotFoundException {
+    public void shouldCheckOutItemAvailable() {
+        library.login(user);
+        menu = new Menu(new Printer(), library);
         systemInMock.provideLines("3");
-        Library library = new Library();
-        library.checkOutItem(3);
-        menu.evaluateOption(2, new Library());
+        menu.evaluateOption(2);
 
         assertThat(systemOutRule.getLog(), containsString("Thank you! Enjoy the item"));
     }
 
     @Test
-    public void shouldCheckOutBookNotAvailable() {
+    public void shouldNotCheckOutItemNotAvailable() throws ItemNotFoundException {
+        menu = new Menu(new Printer(), library);
+        systemInMock.provideLines("3");
+        library.checkOutItem(3);
+        menu.evaluateOption(2);
+
+        assertThat(systemOutRule.getLog(), containsString("That book is not available."));
+    }
+
+    @Test
+    public void shouldNotCheckOutItemUnExistent() {
+        menu = new Menu(new Printer(), library);
         systemInMock.provideLines("99");
-        menu.evaluateOption(2, new Library());
+        menu.evaluateOption(2);
 
         assertThat(systemOutRule.getLog(), containsString("Doesn't exist item "));
     }
 
     @Test
-    public void shouldGiveBacItemAvailable() throws ItemNotFoundException {
+    public void shouldGiveBackItem() throws ItemNotFoundException {
+        library.login(user);
+        menu = new Menu(new Printer(), library);
         systemInMock.provideLines("3");
-        Library library = new Library();
         library.checkOutItem(3);
-        menu.evaluateOption(3, library);
+        menu.evaluateOption(3);
 
         assertThat(systemOutRule.getLog(), containsString("Thank you for returning the item."));
     }
 
     @Test
-    public void shouldGiveBackItemNotAvailable() {
+    public void shouldNotGiveBackItemAvailable() {
+        menu = new Menu(new Printer(), library);
+        systemInMock.provideLines("3");
+        menu.evaluateOption(3);
+
+        assertThat(systemOutRule.getLog(), containsString("That is not a valid book to return."));
+    }
+
+    @Test
+    public void shouldNotGiveBackItemUnExistent() {
+        menu = new Menu(new Printer(), library);
         systemInMock.provideLines("99");
-        menu.evaluateOption(3, new Library());
+        menu.evaluateOption(3);
 
         assertThat(systemOutRule.getLog(), containsString("Doesn't exist item "));
     }
 
     @Test
     public void shouldShowMessageOptionInvalid() {
-        menu.evaluateOption(6, new Library());
+        menu = new Menu(new Printer(), library);
+        menu.evaluateOption(6);
 
         assertThat(systemOutRule.getLog(), containsString("Select a valid option!"));
+    }
+
+    @Test
+    public void shouldShowInformationCustomer() {
+        menu = new Menu(new Printer(), library);
+        library.login(new User("Joaquim", "joaquim@email.com", "1234", "9999"));
+        menu.evaluateOption(4);
+
+        assertThat(systemOutRule.getLog(), containsString("Name: Joaquim, Email: joaquim@email.com, Phone Number: 9999"));
     }
 }

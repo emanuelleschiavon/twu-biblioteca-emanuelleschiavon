@@ -8,7 +8,13 @@ public class Book extends Item{
 
     @Override
     public String toString() {
-        return "Id: " + this.id + ", Author: " + this.owner + ", Year Published: " + this.year + ", Title: " + this.name;
+        String bookInformation = "Id: " + this.id + ", Author: " + this.owner + ", Year Published: " + this.year + ", Title: " + this.name;
+        if(userCheckOut == null){
+            return bookInformation;
+        }
+        return bookInformation + ", User: " + userCheckOut.getName();
     }
+
+
 
 }

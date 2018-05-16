@@ -1,21 +1,14 @@
 package com.twu.biblioteca.ui;
 
 import com.twu.biblioteca.entity.Item;
+import com.twu.biblioteca.entity.User;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class UserInterface {
-
-    public void printWelcome() {
-        System.out.println("---------------------");
-        System.out.println("|  Welcome to the   |");
-        System.out.println("|    LIBRARY...     |");
-        System.out.println("---------------------");
-    }
+public class Printer {
 
     public void printAvailableItems(List<Item> items) {
-
         for (Item item : items) {
             System.out.println(item);
         }
@@ -29,10 +22,6 @@ public class UserInterface {
         for (String option : options) {
             System.out.println(option);
         }
-    }
-
-    public void printMessageError() {
-        System.out.println("Select a valid option!");
     }
 
     public Integer readNumber() {
@@ -50,7 +39,7 @@ public class UserInterface {
         System.out.println("That book is not available.");
     }
 
-    public void printCheckOut(){
+    public void printCheckOut() {
         System.out.println("Type the id of book that you want to check out");
     }
 
@@ -62,7 +51,32 @@ public class UserInterface {
         System.out.println("That is not a valid book to return.");
     }
 
-    public void printGiveBack(){
+    public void printGiveBack() {
         System.out.println("Type the id of book that you want to give back");
+    }
+
+    public void printMessageError() {
+        System.out.println("Select a valid option!");
+    }
+
+    public void requestLogin() {
+        System.out.println("Hello, You need login in Biblioteca to move on...");
+        System.out.print("Email: ");
+    }
+
+    public String readLine() {
+        Scanner scanner = new Scanner(System.in);
+        String line = scanner.nextLine();
+
+        return line;
+    }
+
+    public void requestPassword() {
+        System.out.print("Password: ");
+    }
+
+    public void printCustomerInformation(User user) {
+        System.out.println("Self Information");
+        System.out.println(user.toString());
     }
 }

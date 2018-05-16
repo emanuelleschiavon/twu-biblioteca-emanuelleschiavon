@@ -10,6 +10,10 @@ public class Movie extends Item {
 
     @Override
     public String toString() {
-        return "Id: " + this.id + ", Director: " + this.owner + ", Year: " + this.year + ", Name: " + this.name + ", Movie Rating: " + this.rating;
+        String informationMovie = "Id: " + this.id + ", Director: " + this.owner + ", Year: " + this.year + ", Name: " + this.name + ", Movie Rating: " + this.rating;
+        if(userCheckOut == null){
+            return informationMovie;
+        }
+        return informationMovie + ", User: " + userCheckOut.getName();
     }
 }

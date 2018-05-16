@@ -10,52 +10,65 @@ import java.util.List;
 public class Menu {
 
     private List<String> options;
-    private UserInterface userInterface;
+    private Printer printer;
+    private Library library;
 
-    public Menu(UserInterface userInterface) {
-        this.userInterface = userInterface;
+    public Menu(Printer printer, Library library) {
+        this.printer = printer;
+        this.library = library;
         this.options = new ArrayList<String>();
         addOptionsToMenu();
     }
 
     private void addOptionsToMenu() {
-        this.options = Arrays.asList("1. List Available Books", "2. Check Out Book", "3. Return Book", "0. Quit");
+        this.options = Arrays.asList("1. List Available Books", "2. Check Out Book", "3. Return Book", "4. Show My Information",  "0. Quit");
     }
 
     public List<String> getOptions() {
-        return options;
+        List<String> modifiableListOpions = new ArrayList<String>(this.options);
+        Boolean isLogged = library.getCurrentUser() != null;
+        if (isLogged){
+            return modifiableListOpions;
+        }
+        modifiableListOpions.remove(3);
+        return modifiableListOpions;
     }
 
-    public void evaluateOption(Integer optionMenu, Library library) {
+    public void evaluateOption(Integer optionMenu) {
         Integer itemId;
         switch (optionMenu) {
             case 0:
                 System.exit(0);
             case 1:
-                userInterface.printAvailableItems(library.listAvailableItems());
+                printer.printAvailableItems(library.listAvailableItems());
                 break;
             case 2:
-                userInterface.printCheckOut();
-                itemId = userInterface.readNumber();
+                printer.printCheckOut();
+                itemId = printer.readNumber();
                 Boolean checkOutBook = checkOutItem(itemId, library);
                 if(checkOutBook){
-                    userInterface.printMessageCheckOutSuccess();
+                    printer.printMessageCheckOutSuccess();
                 }else{
-                    userInterface.printMessageCheckOutNotSuccess();
+                    printer.printMessageCheckOutNotSuccess();
                 }
                 break;
             case 3:
-                userInterface.printGiveBack();
-                itemId = userInterface.readNumber();
+                printer.printGiveBack();
+                itemId = printer.readNumber();
                 Boolean giveBackItem = giveBackItem(itemId, library);
                 if (giveBackItem){
-                    userInterface.printMessageGiveBackSuccess();
+                    printer.printMessageGiveBackSuccess();
                 }else{
-                    userInterface.printMessageGiveBackNotSuccess();
+                    printer.printMessageGiveBackNotSuccess();
                 }
                 break;
+            case 4:
+                if(library.getCurrentUser() != null){
+                    printer.printCustomerInformation(library.getCurrentUser());
+                    break;
+                }
             default:
-                userInterface.printMessageError();
+                printer.printMessageError();
                 break;
         }
     }
