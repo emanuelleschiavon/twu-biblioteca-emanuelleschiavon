@@ -10,6 +10,7 @@ public class UserInterfaceController {
 
     public UserInterfaceController() {
         printer = new Printer();
+        library = new Library();
     }
 
     public String getEmail() {
@@ -25,7 +26,6 @@ public class UserInterfaceController {
     }
 
     public Boolean login(String email, String senha) {
-        library = new Library();
         for (User user : library.listUsers()) {
             if (email.equals(user.getEmail()) && senha.equals(user.getPassword())) {
                 library.login(user);
@@ -49,7 +49,7 @@ public class UserInterfaceController {
     }
 
     public void openMenu() {
-        Menu menu = new Menu(new Printer(), library);
+        Menu menu = new Menu(printer, library);
         while(true){
             printer.printOptions(menu.getOptions());
             Integer optionMenu = printer.readNumber();

@@ -21,17 +21,17 @@ public class Menu {
     }
 
     private void addOptionsToMenu() {
-        this.options = Arrays.asList("1. List Available Books", "2. Check Out Book", "3. Return Book", "4. Show My Information",  "0. Quit");
+        this.options = Arrays.asList("1. List Available Books", "2. Check Out Book", "3. Return Book", "4. Show My Information", "5. List Not Available Items", "0. Quit");
     }
 
     public List<String> getOptions() {
-        List<String> modifiableListOpions = new ArrayList<String>(this.options);
+        List<String> modifiableListOptions = new ArrayList<String>(this.options);
         Boolean isLogged = library.getCurrentUser() != null;
-        if (isLogged){
-            return modifiableListOpions;
+        if (isLogged) {
+            return modifiableListOptions;
         }
-        modifiableListOpions.remove(3);
-        return modifiableListOpions;
+        modifiableListOptions.remove(3);
+        return modifiableListOptions;
     }
 
     public void evaluateOption(Integer optionMenu) {
@@ -40,15 +40,15 @@ public class Menu {
             case 0:
                 System.exit(0);
             case 1:
-                printer.printAvailableItems(library.listAvailableItems());
+                printer.printItems(library.listAvailableItems());
                 break;
             case 2:
                 printer.printCheckOut();
                 itemId = printer.readNumber();
                 Boolean checkOutBook = checkOutItem(itemId, library);
-                if(checkOutBook){
+                if (checkOutBook) {
                     printer.printMessageCheckOutSuccess();
-                }else{
+                } else {
                     printer.printMessageCheckOutNotSuccess();
                 }
                 break;
@@ -56,17 +56,20 @@ public class Menu {
                 printer.printGiveBack();
                 itemId = printer.readNumber();
                 Boolean giveBackItem = giveBackItem(itemId, library);
-                if (giveBackItem){
+                if (giveBackItem) {
                     printer.printMessageGiveBackSuccess();
-                }else{
+                } else {
                     printer.printMessageGiveBackNotSuccess();
                 }
                 break;
             case 4:
-                if(library.getCurrentUser() != null){
+                if (library.getCurrentUser() != null) {
                     printer.printCustomerInformation(library.getCurrentUser());
                     break;
                 }
+            case 5:
+                printer.printItems(library.listNotAvailableItems());
+                break;
             default:
                 printer.printMessageError();
                 break;

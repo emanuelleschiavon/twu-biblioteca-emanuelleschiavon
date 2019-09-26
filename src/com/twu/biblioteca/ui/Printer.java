@@ -8,9 +8,13 @@ import java.util.Scanner;
 
 public class Printer {
 
-    public void printAvailableItems(List<Item> items) {
-        for (Item item : items) {
-            System.out.println(item);
+    public void printItems(List<Item> items) {
+        if (items.size() > 0){
+            for (Item item : items) {
+                System.out.println(item);
+            }
+        }else{
+            System.out.println("There aren't items!!!");
         }
     }
 
@@ -79,4 +83,5 @@ public class Printer {
         System.out.println("Self Information");
         System.out.println(user.toString());
     }
+
 }
