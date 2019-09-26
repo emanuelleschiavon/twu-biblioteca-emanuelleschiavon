@@ -7,6 +7,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
+.idea
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
@@ -26,6 +27,7 @@
 .idea/**/dbnavigator.xml
 
 # Gradle
+gradle/
 .idea/**/gradle.xml
 .idea/**/libraries
 
@@ -118,6 +120,8 @@ hs_err_pid*
 ### Gradle ###
 .gradle
 build/
+gradlew
+gradlew.bat
 
 # Ignore Gradle GUI config
 gradle-app.setting
