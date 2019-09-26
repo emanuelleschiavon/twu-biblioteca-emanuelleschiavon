@@ -2,7 +2,9 @@ package com.twu.biblioteca.ui;
 
 import com.twu.biblioteca.entity.Book;
 import com.twu.biblioteca.entity.Item;
+import com.twu.biblioteca.entity.Library;
 import com.twu.biblioteca.entity.User;
+import com.twu.biblioteca.exception.ItemNotFoundException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,6 +23,7 @@ import static org.junit.contrib.java.lang.system.TextFromStandardInputStream.emp
 public class PrinterTest {
 
     private Printer printer;
+    private User user;
 
     @Rule
     public final TextFromStandardInputStream systemInMock = emptyStandardInputStream();
@@ -30,6 +33,7 @@ public class PrinterTest {
 
     @Before
     public void setUp() {
+        user = new User("Joãozin", "joao@email.com", "1234", "9999");
         printer = new Printer();
     }
 
@@ -37,7 +41,7 @@ public class PrinterTest {
     public void shouldPrintListAvailableBooks() {
         List<Item> items = new ArrayList<Item>();
         items.add(new Book(1, "Robert Martin", 2008, "Clean Code"));
-        printer.printAvailableItems(items);
+        printer.printItems(items);
         String printExpected = "Id: 1, Author: Robert Martin, Year Published: 2008, Title: Clean Code";
 
         assertThat(systemOutRule.getLog(), containsString(printExpected));
@@ -61,21 +65,21 @@ public class PrinterTest {
     }
 
     @Test
-    public void shouldPrintEmail(){
+    public void shouldPrintEmail() {
         printer.requestLogin();
 
         assertThat(systemOutRule.getLog(), containsString("You need login in Bibli"));
     }
 
     @Test
-    public void shouldPrintPassword(){
+    public void shouldPrintPassword() {
         printer.requestPassword();
 
         assertEquals(systemOutRule.getLog(), "Password: ");
     }
 
     @Test
-    public void shouldGetLine(){
+    public void shouldGetLine() {
         systemInMock.provideLines("teste");
         String line = printer.readLine();
 
@@ -83,11 +87,28 @@ public class PrinterTest {
     }
 
     @Test
-    public void shouldPrintCustomerInformation(){
-        User user = new User("Joãozin", "joao@email.com", "1234", "9999");
+    public void shouldPrintCustomerInformation() {
         printer.printCustomerInformation(user);
 
         assertThat(systemOutRule.getLog(), containsString("Name: Joãozin, Email: joao@email.com, Phone Number: 9999"));
+    }
+
+    @Test
+    public void shouldPrintNotAvailableItems() throws ItemNotFoundException {
+        Library library = new Library();
+        library.login(user);
+        library.checkOutItem(1);
+        printer.printItems(library.listNotAvailableItems());
+
+        assertThat(systemOutRule.getLog(), containsString("Id: 1, Author: Robert Martin, Year Published: 2008, Title: Clean Code, User: Joãozin"));
+    }
+
+    @Test
+    public void shouldPrintMessageNotExistItemsCheckOut(){
+        Library library = new Library();
+        printer.printItems(library.listNotAvailableItems());
+
+        assertEquals(systemOutRule.getLog(), "There aren't items!!!\n");
     }
 
 }

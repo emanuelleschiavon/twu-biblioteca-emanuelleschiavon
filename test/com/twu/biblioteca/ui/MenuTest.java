@@ -36,29 +36,27 @@ public class MenuTest {
     public void setUp() {
         library = new Library();
         user = new User("João", "joao@email.com", "1234", "99999");
+        menu = new Menu(new Printer(), library);
     }
 
     @Test
     public void shouldHaveOptionInMenuWhenLogged() {
         library.login(new User("Joao", "joao@email.com", "1234", "9999"));
-        menu = new Menu(new Printer(), library);
+        List<String> options = menu.getOptions();
+
+        assertEquals(options.size(), 6);
+    }
+
+    @Test
+    public void shouldOptionMenuHaveNotShowInformationWhenNotLogged() {
         List<String> options = menu.getOptions();
 
         assertEquals(options.size(), 5);
     }
 
     @Test
-    public void shouldOptionMenuHaveNotShowInformationWhenNotLogged() {
-        menu = new Menu(new Printer(), library);
-        List<String> options = menu.getOptions();
-
-        assertEquals(options.size(), 4);
-    }
-
-    @Test
     public void shouldExit() {
         exit.expectSystemExitWithStatus(0);
-        menu = new Menu(new Printer(), library);
         menu.evaluateOption(0);
     }
 
@@ -73,7 +71,6 @@ public class MenuTest {
     @Test
     public void shouldCheckOutItemAvailable() {
         library.login(user);
-        menu = new Menu(new Printer(), library);
         systemInMock.provideLines("3");
         menu.evaluateOption(2);
 
@@ -82,7 +79,6 @@ public class MenuTest {
 
     @Test
     public void shouldNotCheckOutItemNotAvailable() throws ItemNotFoundException {
-        menu = new Menu(new Printer(), library);
         systemInMock.provideLines("3");
         library.checkOutItem(3);
         menu.evaluateOption(2);
@@ -92,7 +88,6 @@ public class MenuTest {
 
     @Test
     public void shouldNotCheckOutItemUnExistent() {
-        menu = new Menu(new Printer(), library);
         systemInMock.provideLines("99");
         menu.evaluateOption(2);
 
@@ -102,7 +97,6 @@ public class MenuTest {
     @Test
     public void shouldGiveBackItem() throws ItemNotFoundException {
         library.login(user);
-        menu = new Menu(new Printer(), library);
         systemInMock.provideLines("3");
         library.checkOutItem(3);
         menu.evaluateOption(3);
@@ -112,7 +106,6 @@ public class MenuTest {
 
     @Test
     public void shouldNotGiveBackItemAvailable() {
-        menu = new Menu(new Printer(), library);
         systemInMock.provideLines("3");
         menu.evaluateOption(3);
 
@@ -121,7 +114,6 @@ public class MenuTest {
 
     @Test
     public void shouldNotGiveBackItemUnExistent() {
-        menu = new Menu(new Printer(), library);
         systemInMock.provideLines("99");
         menu.evaluateOption(3);
 
@@ -130,7 +122,6 @@ public class MenuTest {
 
     @Test
     public void shouldShowMessageOptionInvalid() {
-        menu = new Menu(new Printer(), library);
         menu.evaluateOption(6);
 
         assertThat(systemOutRule.getLog(), containsString("Select a valid option!"));
@@ -138,10 +129,19 @@ public class MenuTest {
 
     @Test
     public void shouldShowInformationCustomer() {
-        menu = new Menu(new Printer(), library);
         library.login(new User("Joaquim", "joaquim@email.com", "1234", "9999"));
         menu.evaluateOption(4);
 
         assertThat(systemOutRule.getLog(), containsString("Name: Joaquim, Email: joaquim@email.com, Phone Number: 9999"));
+    }
+
+    @Test
+    public void shouldShowNotAvailableItems() throws ItemNotFoundException {
+        library.login(new User("Joaquim", "joaquim@email.com", "1234", "9999"));
+        library.checkOutItem(1);
+        menu.evaluateOption(5);
+
+        assertEquals(systemOutRule.getLog(), "Id: 1, Author: Robert Martin, Year Published: 2008, Title: Clean Code, User: Joaquim\n");
+
     }
 }
